@@ -19,6 +19,7 @@ type Startup private () =
 
     // This method gets called by the runtime. Use this method to add services to the container.
     member this.ConfigureServices(services: IServiceCollection) =
+        services.AddSwaggerGen() |> ignore
         // Add framework services.
         services.AddControllers() |> ignore
 
@@ -31,6 +32,12 @@ type Startup private () =
         app.UseRouting() |> ignore
 
         app.UseAuthorization() |> ignore
+
+        app.UseSwagger() |> ignore
+        app.UseSwaggerUI(fun swaggerCfg ->
+            swaggerCfg.SwaggerEndpoint("/swagger/v1/swagger.json", "FSharpLand API") |> ignore
+            swaggerCfg.RoutePrefix <- String.Empty
+            ) |> ignore
 
         app.UseEndpoints(fun endpoints ->
             endpoints.MapControllers() |> ignore
