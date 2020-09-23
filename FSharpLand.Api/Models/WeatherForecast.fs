@@ -1,4 +1,4 @@
-namespace FSharpLand.Api
+namespace FSharpLand.Api.Models
 
 open System
 
