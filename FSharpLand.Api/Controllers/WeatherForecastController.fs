@@ -15,11 +15,14 @@ type WeatherForecastController (logger : ILogger<WeatherForecastController>) =
 
     let summaries = [| "Freezing"; "Bracing"; "Chilly"; "Cool"; "Mild"; "Warm"; "Balmy"; "Hot"; "Sweltering"; "Scorching" |]
         
-    let pickRandomSummary() =         
-        System.Random() |> 
-        fun x -> 
-            x.Next(summaries.Length) |>
-            fun (index) -> summaries.[index]
+    let pickRandom limit: int =
+        limit |>
+        System.Random().Next
+
+    let pickRandomFromArray summaries =         
+        Array.length summaries |>
+        pickRandom |>
+        Array.get summaries
 
     [<HttpGet>]
     member __.Get() : WeatherForecast[] =
@@ -28,5 +31,5 @@ type WeatherForecastController (logger : ILogger<WeatherForecastController>) =
             for index in 0..4 ->
                 { Date = DateTime.Now.AddDays(float index)
                   TemperatureC = rng.Next(-20,55)
-                  Summary = pickRandomSummary() }
+                  Summary = pickRandomFromArray summaries }
         |]
